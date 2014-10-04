@@ -1,12 +1,13 @@
 Summary:	libglade library
 Name:		libglade
 Version:	2.6.4
-Release:	5
+Release:	6
 Epoch:		1
 License:	LGPL
 Group:		X11/Libraries
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/libglade/2.6/%{name}-%{version}.tar.bz2
 # Source0-md5:	d1776b40f4e166b5e9c107f1c8fe4139
+Patch0:		%{name}-libs.patch
 URL:		http://www.gnome.org/
 BuildRequires:	atk-devel
 BuildRequires:	autoconf
@@ -48,6 +49,8 @@ libglade API documentation.
 
 %prep
 %setup -q
+# unresolved symbols: g_module_make_resident
+%patch0 -p1
 
 %build
 %{__gtkdocize}
@@ -68,6 +71,8 @@ install -d $RPM_BUILD_ROOT%{_libdir}/libglade/2.0
 	DESTDIR=$RPM_BUILD_ROOT \
 	HTML_DIR=%{_gtkdocdir} \
 	pkgconfigdir=%{_pkgconfigdir}
+
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/*.la
 
 %clean
 rm -rf $RPM_BUILD_ROOT
